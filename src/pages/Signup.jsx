@@ -10,6 +10,8 @@ import {
 
 import { FormStyle } from "./styles";
 import { Link } from "react-router-dom";
+import firebase from "../service/firebase.utils";
+import { toast } from "react-toastify";
 
 const initialValues = {
   email: "",
@@ -45,11 +47,13 @@ const validationSchema = Yup.object().shape({
   ),
 });
 const Signup = () => {
-  const handleSubmit = ({ photo, ...otherFields }) => {
+  const handleSubmit = async ({ email, password, mobileNumber, photo }) => {
     const formData = new FormData();
     formData.append("photo", photo);
-    for (const key in otherFields) {
-      if (key !== "confirmPassword") formData.append(key, otherFields[key]);
+    try {
+      await firebase.auth().createUserWithEmailAndPassword(email, password);
+    } catch (e) {
+      toast.error(e.message);
     }
   };
   return (

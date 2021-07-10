@@ -4,7 +4,9 @@ import { CustomForm, Input, SubmitButton } from "../components/form";
 
 import { FormStyle } from "./styles";
 import { Link } from "react-router-dom";
+import firebase from "../service/firebase.utils";
 import { passwordValidation } from "../validate";
+import { toast } from "react-toastify";
 
 const initialValues = {
   email: "",
@@ -20,12 +22,20 @@ const validationSchema = Yup.object().shape({
 });
 
 const Login = () => {
+  const handleSubmit = async ({ email, password }) => {
+    try {
+      await firebase.auth().signInWithEmailAndPassword(email, password);
+      toast.info("Success");
+    } catch (e) {
+      toast.error(e.message);
+    }
+  };
   return (
     <FormStyle>
       <CustomForm
         initialValues={initialValues}
         validationSchema={validationSchema}
-        onSubmit={(val) => console.log(val)}
+        onSubmit={handleSubmit}
       >
         <h1 className="w-100 text-center">Login</h1>
         <Input name="email" className="mt-4" placeholder="Email" />
