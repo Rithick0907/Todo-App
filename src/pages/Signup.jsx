@@ -7,11 +7,12 @@ import {
   validateImageFormat,
   validateImageSize,
 } from "../validate";
+import { useDispatch, useSelector } from "react-redux";
 
 import { FormStyle } from "./styles";
 import { Link } from "react-router-dom";
-import firebase from "../service/firebase.utils";
-import { toast } from "react-toastify";
+import { authenticateUser } from "../store/asyncThunk";
+import { loadingSelector } from "../store/user";
 
 const initialValues = {
   email: "",
@@ -47,18 +48,11 @@ const validationSchema = Yup.object().shape({
   ),
 });
 const Signup = () => {
+  const isLoading = useSelector(loadingSelector);
+  const dispatch = useDispatch();
+
   const handleSubmit = async (values, formikActions) => {
-    const { email, password, mobileNumber, photo } = values;
-    const { resetForm } = formikActions;
-    console.log(formikActions);
-    const formData = new FormData();
-    formData.append("photo", photo);
-    try {
-      await firebase.auth().createUserWithEmailAndPassword(email, password);
-      resetForm();
-    } catch (e) {
-      toast.error(e.message);
-    }
+    dispatch(authenticateUser({ data: values, method: "signup" }));
   };
   return (
     <FormStyle>
@@ -92,7 +86,7 @@ const Signup = () => {
           type="password"
           placeholder="Confirm Password"
         />
-        <SubmitButton title="Register" />
+        <SubmitButton title="Register" isLoading={isLoading} />
         <Link className="w-75 text-center mt-3" to="/login">
           Already have an account?
         </Link>

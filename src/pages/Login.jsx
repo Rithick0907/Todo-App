@@ -1,12 +1,13 @@
 import * as Yup from "yup";
 
 import { CustomForm, Input, SubmitButton } from "../components/form";
+import { useDispatch, useSelector } from "react-redux";
 
 import { FormStyle } from "./styles";
 import { Link } from "react-router-dom";
-import firebase from "../service/firebase.utils";
+import { authenticateUser } from "../store/asyncThunk";
+import { loadingSelector } from "../store/user";
 import { passwordValidation } from "../validate";
-import { toast } from "react-toastify";
 
 const initialValues = {
   email: "",
@@ -22,15 +23,10 @@ const validationSchema = Yup.object().shape({
 });
 
 const Login = () => {
+  const isLoading = useSelector(loadingSelector);
+  const dispatch = useDispatch();
   const handleSubmit = async (values, formikActions) => {
-    const { email, password } = values;
-    const { resetForm } = formikActions;
-    try {
-      await firebase.auth().signInWithEmailAndPassword(email, password);
-      resetForm();
-    } catch (e) {
-      toast.error(e.message);
-    }
+    dispatch(authenticateUser({ data: values, method: "signin" }));
   };
   return (
     <FormStyle>
@@ -47,7 +43,7 @@ const Login = () => {
           className="mt-4"
           placeholder="Password"
         />
-        <SubmitButton title="Login" />
+        <SubmitButton title="Login" isLoading={isLoading} />
         <Link className="w-75 text-center mt-3" to="/signup">
           Don't have an account?
         </Link>
