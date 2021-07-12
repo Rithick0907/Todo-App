@@ -22,10 +22,12 @@ const validationSchema = Yup.object().shape({
 });
 
 const Login = () => {
-  const handleSubmit = async ({ email, password }) => {
+  const handleSubmit = async (values, formikActions) => {
+    const { email, password } = values;
+    const { resetForm } = formikActions;
     try {
       await firebase.auth().signInWithEmailAndPassword(email, password);
-      toast.info("Success");
+      resetForm();
     } catch (e) {
       toast.error(e.message);
     }

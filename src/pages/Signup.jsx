@@ -47,11 +47,15 @@ const validationSchema = Yup.object().shape({
   ),
 });
 const Signup = () => {
-  const handleSubmit = async ({ email, password, mobileNumber, photo }) => {
+  const handleSubmit = async (values, formikActions) => {
+    const { email, password, mobileNumber, photo } = values;
+    const { resetForm } = formikActions;
+    console.log(formikActions);
     const formData = new FormData();
     formData.append("photo", photo);
     try {
       await firebase.auth().createUserWithEmailAndPassword(email, password);
+      resetForm();
     } catch (e) {
       toast.error(e.message);
     }

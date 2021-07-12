@@ -1,20 +1,17 @@
-import { ErrorMessage, useFormikContext } from "formik";
+import { ErrorMessage, useField } from "formik";
 
 import { Form } from "react-bootstrap";
 
 const Input = ({ name, ...otherAttributes }) => {
-  const { errors, touched, values, handleChange, handleBlur } =
-    useFormikContext();
+  const [field, meta] = useField(name);
+  const { error, touched } = meta;
 
   return (
     <>
       <Form.Control
-        name={name}
-        value={values[name]}
-        onChange={handleChange}
-        onBlur={handleBlur}
-        isValid={touched[name] && !errors[name]}
-        isInvalid={touched[name] && errors[name]}
+        isValid={touched && !error}
+        isInvalid={touched && error}
+        {...field}
         {...otherAttributes}
       />
       <ErrorMessage className="text-danger mt-1" name={name} component="div" />

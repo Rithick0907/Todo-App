@@ -1,3 +1,4 @@
+import { Form } from "formik";
 import { Formik } from "formik";
 
 const CustomForm = ({
@@ -11,7 +12,7 @@ const CustomForm = ({
     validationSchema={validationSchema}
     onSubmit={onSubmit}
   >
-    {() => <div className="custom-form">{children}</div>}
+    {() => <Form>{children}</Form>}
   </Formik>
 );
 
