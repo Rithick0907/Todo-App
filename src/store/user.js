@@ -10,8 +10,10 @@ const userSlice = createSlice({
     error: null,
   },
   reducers: {
-    login: (user, actions) => {},
-    logout: (user, actions) => {},
+    logout: (user, actions) => {
+      user.userConfig = null;
+      user.error = null;
+    },
   },
   extraReducers: {
     [authenticateUser.pending]: (user, actions) => {
@@ -39,5 +41,5 @@ export const userSelector = createSelector(
   (user) => user.userConfig
 );
 
-export const { login, logout } = userSlice.actions;
+export const { logout } = userSlice.actions;
 export default userSlice.reducer;
