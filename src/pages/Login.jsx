@@ -1,11 +1,12 @@
 import * as Yup from "yup";
 
 import { CustomForm, Input, SubmitButton } from "../components/form";
+import { Link, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import { FormStyle } from "./styles";
-import { Link } from "react-router-dom";
 import { authenticateUser } from "../store/asyncThunk";
+import isError from "../utils/isError";
 import { loadingSelector } from "../store/user";
 import { passwordValidation } from "../validate";
 
@@ -25,9 +26,20 @@ const validationSchema = Yup.object().shape({
 const Login = () => {
   const isLoading = useSelector(loadingSelector);
   const dispatch = useDispatch();
-  const handleSubmit = async (values, formikActions) => {
-    dispatch(authenticateUser({ data: values, method: "signin" }));
+  const history = useHistory();
+
+  const handleSubmit = async (values, { resetForm }) => {
+    const { error, payload } = await dispatch(
+      authenticateUser({ data: values, method: "signin" })
+    );
+    if (payload) {
+      history.push("/main");
+    } else if (error) {
+      isError(error.message);
+      resetForm();
+    }
   };
+
   return (
     <FormStyle>
       <CustomForm

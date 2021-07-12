@@ -1,6 +1,7 @@
 import * as Yup from "yup";
 
 import { CustomForm, FileInput, Input, SubmitButton } from "../components/form";
+import { Link, useHistory } from "react-router-dom";
 import {
   mobileNumberValidation,
   passwordValidation,
@@ -10,8 +11,8 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 
 import { FormStyle } from "./styles";
-import { Link } from "react-router-dom";
 import { authenticateUser } from "../store/asyncThunk";
+import isError from "../utils/isError";
 import { loadingSelector } from "../store/user";
 
 const initialValues = {
@@ -50,9 +51,18 @@ const validationSchema = Yup.object().shape({
 const Signup = () => {
   const isLoading = useSelector(loadingSelector);
   const dispatch = useDispatch();
+  const history = useHistory();
 
-  const handleSubmit = async (values, formikActions) => {
-    dispatch(authenticateUser({ data: values, method: "signup" }));
+  const handleSubmit = async (values, { resetForm }) => {
+    const { payload, error } = await dispatch(
+      authenticateUser({ data: values, method: "signup" })
+    );
+    if (payload) {
+      history.push("/main");
+    } else if (error) {
+      isError(error.message);
+      resetForm();
+    }
   };
   return (
     <FormStyle>

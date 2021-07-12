@@ -13,4 +13,6 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
+const addUserToDB = (userAuth, additionalData) => {};
+
 export default firebase;
