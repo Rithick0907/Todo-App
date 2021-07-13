@@ -5,7 +5,7 @@ import { Link, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import { FormStyle } from "./styles";
-import { authenticateUser } from "../store/asyncThunk";
+import { authenticateUser } from "../store/asyncThunk/authThunk";
 import isError from "../utils/isError";
 import { loadingSelector } from "../store/user";
 import { passwordValidation } from "../validate";

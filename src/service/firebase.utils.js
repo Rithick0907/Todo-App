@@ -1,5 +1,7 @@
-import firebase from "firebase/app";
 import "firebase/auth";
+
+import { apiRequest } from "../store/asyncThunk/apiRequestThunk";
+import firebase from "firebase/app";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCHJDy6sfVM83sYexwRmJAldEjCdcVvi3c",
@@ -13,6 +15,12 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
-const addUserToDB = (userAuth, additionalData) => {};
+export const addUserToDB = async (userAuth, additionalData) => {
+  const { dispatch } = additionalData;
+  // const response = await dispatch(
+  //   apiRequest({ url: `users/${userAuth.uid}.json` })
+  // );
+  // console.log(response);
+};
 
 export default firebase;
