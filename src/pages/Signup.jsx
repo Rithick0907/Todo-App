@@ -11,7 +11,6 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 
 import { FormStyle } from "./styles";
-import { authenticateUser } from "../store/asyncThunk/authThunk";
 import isError from "../utils/isError";
 import { loadingSelector } from "../store/user";
 
@@ -54,9 +53,8 @@ const Signup = () => {
   const history = useHistory();
 
   const handleSubmit = async (values, { resetForm }) => {
-    const { payload, error } = await dispatch(
-      authenticateUser({ data: values, method: "signup" })
-    );
+    const { payload, error } = await dispatch();
+    // authenticateUser({ data: values, method: "signup" })
     if (payload) {
       history.push("/main");
     } else if (error) {

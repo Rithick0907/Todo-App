@@ -1,34 +1,17 @@
-import { authenticateUser } from "./asyncThunk/authThunk";
 import { createSelector } from "reselect";
 import { createSlice } from "@reduxjs/toolkit";
 
 const userSlice = createSlice({
   name: "user",
   initialState: {
-    userConfig: null,
+    authToken: null,
+    uid: null,
+    email: null,
     loading: false,
     error: null,
   },
-  reducers: {
-    logout: (user, actions) => {
-      user.userConfig = null;
-      user.error = null;
-    },
-  },
-  extraReducers: {
-    [authenticateUser.pending]: (user, actions) => {
-      user.loading = true;
-    },
-    [authenticateUser.fulfilled]: (user, actions) => {
-      user.loading = false;
-      user.userConfig = actions.payload;
-      user.error = null;
-    },
-    [authenticateUser.rejected]: (user, actions) => {
-      user.loading = false;
-      user.error = actions.error.message;
-    },
-  },
+  reducers: {},
+  extraReducers: {},
 });
 
 export const loadingSelector = createSelector(
@@ -38,7 +21,7 @@ export const loadingSelector = createSelector(
 
 export const userSelector = createSelector(
   (store) => store.entities.user,
-  (user) => user.userConfig
+  (user) => user.authToken
 );
 
 export const { logout } = userSlice.actions;

@@ -1,6 +1,5 @@
 import { Button, Nav, Navbar } from "react-bootstrap";
 
-import { logout } from "../store/user";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 
@@ -9,7 +8,6 @@ const Main = () => {
   const history = useHistory();
 
   const handleLogout = () => {
-    dispatch(logout());
     history.replace("/login");
   };
 

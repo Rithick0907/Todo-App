@@ -5,7 +5,6 @@ import { Link, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import { FormStyle } from "./styles";
-import { authenticateUser } from "../store/asyncThunk/authThunk";
 import isError from "../utils/isError";
 import { loadingSelector } from "../store/user";
 import { passwordValidation } from "../validate";
@@ -29,15 +28,13 @@ const Login = () => {
   const history = useHistory();
 
   const handleSubmit = async (values, { resetForm }) => {
-    const { error, payload } = await dispatch(
-      authenticateUser({ data: values, method: "signin" })
-    );
-    if (payload) {
-      history.push("/main");
-    } else if (error) {
-      isError(error.message);
-      resetForm();
-    }
+    // const { error, payload } = await dispatch(loginThunk(values));
+    // if (payload) {
+    //   history.push("/main");
+    // } else if (error) {
+    //   isError(error.message);
+    //   resetForm();
+    // }
   };
 
   return (
