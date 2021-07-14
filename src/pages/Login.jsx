@@ -5,8 +5,10 @@ import { Link, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import { FormStyle } from "./styles";
+import authenticateUser from "../store/asyncThunk/authenticateUser";
 import isError from "../utils/isError";
 import { loadingSelector } from "../store/user";
+import { loginURL } from "../service/httpConfig";
 import { passwordValidation } from "../validate";
 
 const initialValues = {
@@ -28,7 +30,9 @@ const Login = () => {
   const history = useHistory();
 
   const handleSubmit = async (values, { resetForm }) => {
-    // const { error, payload } = await dispatch(loginThunk(values));
+    const { error, payload } = await dispatch(
+      authenticateUser({ values, url: loginURL })
+    );
     // if (payload) {
     //   history.push("/main");
     // } else if (error) {

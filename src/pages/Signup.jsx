@@ -11,8 +11,10 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 
 import { FormStyle } from "./styles";
+import authenticateUser from "../store/asyncThunk/authenticateUser";
 import isError from "../utils/isError";
 import { loadingSelector } from "../store/user";
+import { signupURL } from "../service/httpConfig";
 
 const initialValues = {
   email: "",
@@ -53,8 +55,9 @@ const Signup = () => {
   const history = useHistory();
 
   const handleSubmit = async (values, { resetForm }) => {
-    const { payload, error } = await dispatch();
-    // authenticateUser({ data: values, method: "signup" })
+    const { error, payload } = await dispatch(
+      authenticateUser({ values, url: signupURL })
+    );
     if (payload) {
       history.push("/main");
     } else if (error) {
