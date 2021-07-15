@@ -27,3 +27,14 @@ export const FormStyle = styled.div`
     }
   }
 `;
+
+export const MainStyled = styled.main`
+  min-height: 88vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  margin-top: 2rem;
+  & > .card {
+    flex: 0 1 70%;
+  }
+`;

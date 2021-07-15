@@ -33,12 +33,12 @@ const Login = () => {
     const { error, payload } = await dispatch(
       authenticateUser({ values, url: loginURL })
     );
-    // if (payload) {
-    //   history.push("/main");
-    // } else if (error) {
-    //   isError(error.message);
-    //   resetForm();
-    // }
+    if (payload) {
+      history.push("/main");
+    } else if (error) {
+      isError(error.message);
+      resetForm();
+    }
   };
 
   return (

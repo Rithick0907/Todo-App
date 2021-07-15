@@ -1,3 +1,4 @@
+import addUserToDB from "../../utils/addUserToDB";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { instance } from "../../service/httpConfig";
 
@@ -18,6 +19,7 @@ const authenticateUser = createAsyncThunk(
           returnSecureToken: true,
         },
       });
+      await addUserToDB(data, values);
       return data;
     } catch (e) {
       if (
