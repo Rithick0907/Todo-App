@@ -11,8 +11,8 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 
 import { FormStyle } from "./styles";
+import Notification from "../utils/Notification";
 import authenticateUser from "../store/asyncThunk/authenticateUser";
-import isError from "../utils/isError";
 import { loadingSelector } from "../store/user";
 import { signupURL } from "../service/httpConfig";
 
@@ -58,10 +58,10 @@ const Signup = () => {
     const { error, payload } = await dispatch(
       authenticateUser({ values, url: signupURL })
     );
-    if (payload) {
+    if (!error && payload) {
       history.push("/main");
-    } else if (error) {
-      isError(error.message);
+    } else if (error && error.name === "RejectWithValue") {
+      Notification(payload, "error");
       resetForm();
     }
   };

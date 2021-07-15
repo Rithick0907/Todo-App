@@ -5,8 +5,8 @@ import { Link, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import { FormStyle } from "./styles";
+import Notification from "../utils/Notification";
 import authenticateUser from "../store/asyncThunk/authenticateUser";
-import isError from "../utils/isError";
 import { loadingSelector } from "../store/user";
 import { loginURL } from "../service/httpConfig";
 import { passwordValidation } from "../validate";
@@ -33,10 +33,10 @@ const Login = () => {
     const { error, payload } = await dispatch(
       authenticateUser({ values, url: loginURL })
     );
-    if (payload) {
+    if (!error && payload) {
       history.push("/main");
-    } else if (error) {
-      isError(error.message);
+    } else if (error && error.name === "RejectWithValue") {
+      Notification(payload, "error");
       resetForm();
     }
   };
