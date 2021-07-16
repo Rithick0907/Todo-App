@@ -8,13 +8,11 @@ import {
   validateImageFormat,
   validateImageSize,
 } from "../validate";
-import { useDispatch, useSelector } from "react-redux";
 
 import { FormStyle } from "./styles";
 import Notification from "../utils/Notification";
-import authenticateUser from "../store/asyncThunk/authenticateUser";
-import { loadingSelector } from "../store/user";
-import { signupURL } from "../service/httpConfig";
+import { registerUser } from "../store/user";
+import { useDispatch } from "react-redux";
 
 const initialValues = {
   email: "",
@@ -50,20 +48,15 @@ const validationSchema = Yup.object().shape({
   ),
 });
 const Signup = () => {
-  const isLoading = useSelector(loadingSelector);
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const handleSubmit = async (values, { resetForm }) => {
-    const { error, payload } = await dispatch(
-      authenticateUser({ values, url: signupURL })
-    );
-    if (!error && payload) {
-      history.push("/main");
-    } else if (error && error.name === "RejectWithValue") {
-      Notification(payload, "error");
-      resetForm();
-    }
+  const handleSubmit = async (
+    { photo, confirmPassword, ...values },
+    { resetForm }
+  ) => {
+    dispatch(registerUser(values));
+    history.push("/main");
   };
   return (
     <FormStyle>
@@ -97,7 +90,7 @@ const Signup = () => {
           type="password"
           placeholder="Confirm Password"
         />
-        <SubmitButton title="Register" isLoading={isLoading} />
+        <SubmitButton title="Register" isLoading={false} />
         <Link className="w-75 text-center mt-3" to="/login">
           Already have an account?
         </Link>

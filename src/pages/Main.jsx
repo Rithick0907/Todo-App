@@ -1,7 +1,7 @@
 import * as Yup from "yup";
 
 import { Button, Card, Container, Nav, Navbar } from "react-bootstrap";
-import { CustomForm, Input, SubmitButton } from "../components/form";
+import { CustomForm, Input } from "../components/form";
 
 import { MainStyled } from "./styles";
 import { logout } from "../store/user";

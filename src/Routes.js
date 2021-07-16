@@ -14,7 +14,7 @@ const Routes = () => {
       <Route path="/signup" component={SignUp} />
       <Route
         path="/main"
-        render={(props) => (user ? <Main /> : <Redirect to="/login" />)}
+        render={(props) => (user.token ? <Main /> : <Redirect to="/login" />)}
       />
       <Redirect to="/login" />
     </Switch>

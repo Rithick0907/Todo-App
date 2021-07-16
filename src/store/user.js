@@ -1,53 +1,70 @@
-import authenticateUser from "./asyncThunk/authenticateUser";
+import { loginURL, signupURL } from "../service/httpConfig";
+
+import { apiCallBegan } from "./apiActions";
 import { createSelector } from "reselect";
 import { createSlice } from "@reduxjs/toolkit";
 
+const initialState = {
+  userData: {
+    token: null,
+    uid: null,
+    email: null,
+  },
+  loading: false,
+  lastFetch: null,
+  error: null,
+};
+
 const userSlice = createSlice({
   name: "user",
-  initialState: {
-    authToken: null,
-    userData: null,
-    loading: false,
-    lastFetch: null,
-    error: null,
-  },
+  initialState,
   reducers: {
-    logout: (state, actions) => {
-      state.authToken = null;
-      state.userData = null;
-      state.loading = false;
-      state.lastFetch = null;
-      state.error = null;
-    },
-  },
-  extraReducers: {
-    [authenticateUser.pending]: (state, actions) => {
+    authenticationPending: (state, action) => {
       state.loading = true;
       state.error = null;
     },
-    [authenticateUser.fulfilled]: (state, actions) => {
-      const { idToken, ...otherValues } = actions.payload;
+    authenticationFailed: (state, action) => {
+      state.error = action.payload;
       state.loading = false;
-      state.authToken = idToken;
-      state.userData = { ...otherValues };
-      state.error = null;
     },
-    [authenticateUser.rejected]: (state, actions) => {
+    login: (state, action) => {
+      const { idToken: token, localId: uid, email } = action.payload;
+      state.userData.token = token;
+      state.userData.uid = uid;
+      state.userData.email = email;
+      state.lastFetch = Date.now();
       state.loading = false;
-      state.error = actions.payload;
     },
+    logout: (state, actions) => initialState,
   },
 });
 
-export const loadingSelector = createSelector(
-  (store) => store.entities.user,
-  (user) => user.loading
-);
+export const { authenticationPending, authenticationFailed, login, logout } =
+  userSlice.actions;
+
+//Custom Actions
+export const registerUser = (data) =>
+  apiCallBegan({
+    url: signupURL,
+    method: "POST",
+    data,
+    onStart: authenticationPending.type,
+    onSuccess: login.type,
+    onError: authenticationFailed.type,
+  });
+
+export const loginUser = (data) =>
+  apiCallBegan({
+    data,
+    method: "POST",
+    url: loginURL,
+    onStart: authenticationPending.type,
+    onSuccess: login.type,
+    onError: authenticationFailed.type,
+  });
 
 export const userSelector = createSelector(
-  (store) => store.entities.user,
-  (user) => user.authToken
+  (store) => store.user,
+  (user) => user.userData
 );
-
-export const { logout } = userSlice.actions;
 export default userSlice.reducer;

@@ -2,14 +2,23 @@ import * as Yup from "yup";
 
 import { CustomForm, Input, SubmitButton } from "../components/form";
 import { Link, useHistory } from "react-router-dom";
+import {
+  authenticationFailed,
+  authenticationPending,
+  login,
+  loginUser,
+  userSelector,
+} from "../store/user";
 import { useDispatch, useSelector } from "react-redux";
 
 import { FormStyle } from "./styles";
 import Notification from "../utils/Notification";
-import authenticateUser from "../store/asyncThunk/authenticateUser";
-import { loadingSelector } from "../store/user";
+import { apiCallBegan } from "../store/apiActions";
 import { loginURL } from "../service/httpConfig";
 import { passwordValidation } from "../validate";
+
+// import authenticateUser from "../store/asyncThunk/authenticateUser";
+// import { loadingSelector } from "../store/user";
 
 const initialValues = {
   email: "",
@@ -25,20 +34,12 @@ const validationSchema = Yup.object().shape({
 });
 
 const Login = () => {
-  const isLoading = useSelector(loadingSelector);
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const handleSubmit = async (values, { resetForm }) => {
-    const { error, payload } = await dispatch(
-      authenticateUser({ values, url: loginURL })
-    );
-    if (!error && payload) {
-      history.push("/main");
-    } else if (error && error.name === "RejectWithValue") {
-      Notification(payload, "error");
-      resetForm();
-    }
+  const handleSubmit = async (data, { resetForm }) => {
+    await dispatch(loginUser(data));
+    history.push("/main");
   };
 
   return (
@@ -56,7 +57,7 @@ const Login = () => {
           className="mt-4"
           placeholder="Password"
         />
-        <SubmitButton title="Login" isLoading={isLoading} />
+        <SubmitButton title="Login" isLoading={false} />
         <Link className="w-75 text-center mt-3" to="/signup">
           Don't have an account?
         </Link>
