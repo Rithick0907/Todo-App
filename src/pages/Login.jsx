@@ -2,12 +2,15 @@ import * as Yup from "yup";
 
 import { CustomForm, Input, SubmitButton } from "../components/form";
 import { Link, useHistory } from "react-router-dom";
+import React, { useEffect } from "react";
 import {
+  authenticationErrorSelector,
   authenticationFailed,
   authenticationLoadingSelector,
   authenticationPending,
   login,
   loginUser,
+  logout,
   userSelector,
 } from "../store/user";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,11 +18,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { FormStyle } from "./styles";
 import Notification from "../utils/Notification";
 import { apiCallBegan } from "../store/apiActions";
+import isResponseError from "../utils/isResponseError";
 import { loginURL } from "../service/httpConfig";
 import { passwordValidation } from "../validate";
-
-// import authenticateUser from "../store/asyncThunk/authenticateUser";
-// import { loadingSelector } from "../store/user";
 
 const initialValues = {
   email: "",
@@ -36,8 +37,14 @@ const validationSchema = Yup.object().shape({
 
 const Login = () => {
   const isLoading = useSelector(authenticationLoadingSelector);
+  const isError = useSelector(authenticationErrorSelector);
   const dispatch = useDispatch();
   const history = useHistory();
+
+  useEffect(() => {
+    Notification(isError, "error");
+    if (isError) dispatch(logout());
+  }, [isError, dispatch]);
 
   const handleSubmit = async (data, { resetForm }) => {
     await dispatch(

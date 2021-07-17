@@ -1,6 +1,7 @@
 import { apiCallBegan, apiCallFailed, apiCallSuccess } from "../apiActions";
 
 import axios from "axios";
+import isResponseError from "../../utils/isResponseError";
 
 const apiMiddleware =
   ({ dispatch }) =>
@@ -14,7 +15,7 @@ const apiMiddleware =
     next(action);
 
     try {
-      const response = await axios.request({
+      const response = await axios({
         url,
         method,
         data,
@@ -26,9 +27,12 @@ const apiMiddleware =
         const { history, path } = data.redirectTo;
         history.push(path);
       }
-    } catch (error) {
+    } catch (e) {
       dispatch(apiCallFailed());
-      dispatch({ type: onError, payload: error.message });
+      const errMsg = isResponseError(e)
+        ? e.response.data.error.message
+        : "Something went wrong";
+      dispatch({ type: onError, payload: errMsg });
     }
   };
 

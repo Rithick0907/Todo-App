@@ -2,7 +2,13 @@ import * as Yup from "yup";
 
 import { CustomForm, FileInput, Input, SubmitButton } from "../components/form";
 import { Link, useHistory } from "react-router-dom";
-import { authenticationLoadingSelector, registerUser } from "../store/user";
+import React, { useEffect } from "react";
+import {
+  authenticationErrorSelector,
+  authenticationLoadingSelector,
+  logout,
+  registerUser,
+} from "../store/user";
 import {
   mobileNumberValidation,
   passwordValidation,
@@ -49,8 +55,14 @@ const validationSchema = Yup.object().shape({
 });
 const Signup = () => {
   const isLoading = useSelector(authenticationLoadingSelector);
+  const isError = useSelector(authenticationErrorSelector);
   const dispatch = useDispatch();
   const history = useHistory();
+
+  useEffect(() => {
+    Notification(isError, "error");
+    if (isError) dispatch(logout());
+  }, [isError, dispatch]);
 
   const handleSubmit = async (
     { photo, confirmPassword, ...data },
