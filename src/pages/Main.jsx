@@ -2,11 +2,13 @@ import * as Yup from "yup";
 
 import { Button, Card, Container, Nav, Navbar } from "react-bootstrap";
 import { CustomForm, Input } from "../components/form";
+import React, { useEffect } from "react";
+import { fetchTask, tasksSelector } from "../store/tasks";
+import { logout, userSelector } from "../store/user";
+import { useDispatch, useSelector } from "react-redux";
 
 import { MainStyled } from "./styles";
 import { TiTickOutline } from "react-icons/ti";
-import { logout } from "../store/user";
-import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 
 const initialValues = {
@@ -18,11 +20,18 @@ const validationSchema = Yup.object().shape({
 });
 
 const Main = () => {
+  const user = useSelector(userSelector);
+  const tasks = useSelector(tasksSelector);
   const dispatch = useDispatch();
   const history = useHistory();
+  const { uid } = user;
 
-  const handleSubmit = (val) => {
-    console.log(val);
+  useEffect(() => {
+    dispatch(fetchTask(uid));
+  }, [dispatch, uid]);
+
+  const handleSubmit = (data, { resetForm }) => {
+    resetForm();
   };
 
   const handleLogout = () => {
@@ -67,11 +76,17 @@ const Main = () => {
             </CustomForm>
           </Card.Body>
         </Card>
-        <div className="answer-list p-2 mt-4 justify-content-between">
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quo,
-          repellat!
-          <TiTickOutline onClick={handleTaskRemoval} />
-        </div>
+        {tasks.map(({ task, key }) => (
+          <div
+            key={key}
+            className="answer-list p-2 mt-4 justify-content-between"
+          >
+            {task}
+            <span>
+              <TiTickOutline size={20} onClick={handleTaskRemoval} />
+            </span>
+          </div>
+        ))}
       </MainStyled>
     </>
   );
