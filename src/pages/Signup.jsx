@@ -8,12 +8,7 @@ import {
   logout,
   registerUser,
 } from "../store/user";
-import {
-  mobileNumberValidation,
-  passwordValidation,
-  validateImageFormat,
-  validateImageSize,
-} from "../validate";
+import { mobileNumberValidation, passwordValidation } from "../validate";
 import { useDispatch, useSelector } from "react-redux";
 
 import { FormStyle } from "./styles";
@@ -23,7 +18,6 @@ import Notification from "../utils/Notification";
 const initialValues = {
   email: "",
   mobileNumber: "",
-  photo: "",
   password: "",
   confirmPassword: "",
 };
@@ -34,16 +28,6 @@ const validationSchema = Yup.object().shape({
     .required()
     .matches(mobileNumberValidation.regExp, mobileNumberValidation.errorMessage)
     .label("Mobile Number"),
-  photo: Yup.mixed()
-    .required("Profile Photo must be added")
-    .test(
-      "type",
-      "Following Format only supported: .jpeg,.jpg,.png,.gif",
-      (val) => validateImageFormat(val)
-    )
-    .test("fileSize", "Upload a image below 1 MB", (val) =>
-      validateImageSize(val)
-    ),
   password: Yup.string()
     .required()
     .matches(passwordValidation.regExp, passwordValidation.errorMessage)
@@ -83,12 +67,6 @@ const Signup = () => {
           className="mt-4"
           name="mobileNumber"
           placeholder="Mobile Number"
-        />
-        <FileInput
-          className="mt-4"
-          name="photo"
-          type="file"
-          placeholder="Upload Your Photo"
         />
         <Input
           className="mt-4"
