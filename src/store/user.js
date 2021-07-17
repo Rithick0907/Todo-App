@@ -51,16 +51,20 @@ export const registerUser = (data) =>
     onStart: authenticationPending.type,
     onSuccess: login.type,
     onError: authenticationFailed.type,
+    redirectTo: true,
+    path: "/main",
   });
 
 export const loginUser = (data) =>
   apiCallBegan({
-    data,
     method: "POST",
     url: loginURL,
+    data,
     onStart: authenticationPending.type,
     onSuccess: login.type,
     onError: authenticationFailed.type,
+    redirectTo: true,
+    path: "/main",
   });
 
 //Selectors

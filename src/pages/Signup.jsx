@@ -1,7 +1,6 @@
 import * as Yup from "yup";
 
 import { CustomForm, FileInput, Input, SubmitButton } from "../components/form";
-import { Link, useHistory } from "react-router-dom";
 import React, { useEffect } from "react";
 import {
   authenticationErrorSelector,
@@ -18,6 +17,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 
 import { FormStyle } from "./styles";
+import { Link } from "react-router-dom";
 import Notification from "../utils/Notification";
 
 const initialValues = {
@@ -57,7 +57,6 @@ const Signup = () => {
   const isLoading = useSelector(authenticationLoadingSelector);
   const isError = useSelector(authenticationErrorSelector);
   const dispatch = useDispatch();
-  const history = useHistory();
 
   useEffect(() => {
     Notification(isError, "error");
@@ -68,9 +67,7 @@ const Signup = () => {
     { photo, confirmPassword, ...data },
     { resetForm }
   ) => {
-    await dispatch(
-      registerUser({ ...data, redirectTo: { history, path: "/main" } })
-    );
+    await dispatch(registerUser(data));
     resetForm();
   };
   return (

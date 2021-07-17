@@ -1,25 +1,18 @@
 import * as Yup from "yup";
 
 import { CustomForm, Input, SubmitButton } from "../components/form";
-import { Link, useHistory } from "react-router-dom";
 import React, { useEffect } from "react";
 import {
   authenticationErrorSelector,
-  authenticationFailed,
   authenticationLoadingSelector,
-  authenticationPending,
-  login,
   loginUser,
   logout,
-  userSelector,
 } from "../store/user";
 import { useDispatch, useSelector } from "react-redux";
 
 import { FormStyle } from "./styles";
+import { Link } from "react-router-dom";
 import Notification from "../utils/Notification";
-import { apiCallBegan } from "../store/apiActions";
-import isResponseError from "../utils/isResponseError";
-import { loginURL } from "../service/httpConfig";
 import { passwordValidation } from "../validate";
 
 const initialValues = {
@@ -39,7 +32,6 @@ const Login = () => {
   const isLoading = useSelector(authenticationLoadingSelector);
   const isError = useSelector(authenticationErrorSelector);
   const dispatch = useDispatch();
-  const history = useHistory();
 
   useEffect(() => {
     Notification(isError, "error");
@@ -47,9 +39,7 @@ const Login = () => {
   }, [isError, dispatch]);
 
   const handleSubmit = async (data, { resetForm }) => {
-    await dispatch(
-      loginUser({ ...data, redirectTo: { history, path: "/main" } })
-    );
+    await dispatch(loginUser(data));
     resetForm();
   };
 

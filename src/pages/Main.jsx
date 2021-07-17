@@ -4,6 +4,7 @@ import { Button, Card, Container, Nav, Navbar } from "react-bootstrap";
 import { CustomForm, Input } from "../components/form";
 
 import { MainStyled } from "./styles";
+import { TiTickOutline } from "react-icons/ti";
 import { logout } from "../store/user";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
@@ -27,6 +28,10 @@ const Main = () => {
   const handleLogout = () => {
     dispatch(logout());
     history.replace("/login");
+  };
+
+  const handleTaskRemoval = (params) => {
+    console.log("clicked");
   };
 
   return (
@@ -62,6 +67,11 @@ const Main = () => {
             </CustomForm>
           </Card.Body>
         </Card>
+        <div className="answer-list p-2 mt-4 justify-content-between">
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quo,
+          repellat!
+          <TiTickOutline onClick={handleTaskRemoval} />
+        </div>
       </MainStyled>
     </>
   );

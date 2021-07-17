@@ -29,13 +29,24 @@ export const FormStyle = styled.div`
 `;
 
 export const MainStyled = styled.main`
-  min-height: 88vh;
-  display: flex;
-  justify-content: center;
   align-items: flex-start;
-  margin-top: 2rem;
-  & > .card {
-    flex: 0 1 70%;
+  align-content: flex-start;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 2rem 0;
+  min-height: 88vh;
+
+  & > .card,
+  & > .answer-list {
     box-shadow: 0 2px 8px gray;
+    display: flex;
+    flex: 0 1 70%;
+  }
+
+  & svg {
+    border: 1px solid black;
+    cursor: pointer;
+    margin-top: 5px;
   }
 `;
