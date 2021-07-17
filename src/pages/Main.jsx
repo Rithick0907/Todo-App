@@ -3,7 +3,12 @@ import * as Yup from "yup";
 import { Button, Card, Container, Nav, Navbar } from "react-bootstrap";
 import { CustomForm, Input } from "../components/form";
 import React, { useEffect } from "react";
-import { fetchTask, tasksSelector } from "../store/tasks";
+import {
+  deleteTask,
+  fetchTask,
+  tasksSelector,
+  updateTask,
+} from "../store/tasks";
 import { logout, userSelector } from "../store/user";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -12,11 +17,11 @@ import { TiTickOutline } from "react-icons/ti";
 import { useHistory } from "react-router-dom";
 
 const initialValues = {
-  addTask: "",
+  task: "",
 };
 
 const validationSchema = Yup.object().shape({
-  addTask: Yup.string().required().label("New Task"),
+  task: Yup.string().required().label("New Task"),
 });
 
 const Main = () => {
@@ -31,6 +36,7 @@ const Main = () => {
   }, [dispatch, uid]);
 
   const handleSubmit = (data, { resetForm }) => {
+    dispatch(updateTask(uid, { createdAt: Date.now, ...data }));
     resetForm();
   };
 
@@ -39,8 +45,8 @@ const Main = () => {
     history.replace("/login");
   };
 
-  const handleTaskRemoval = (params) => {
-    console.log("clicked");
+  const handleTaskRemoval = (taskId) => {
+    dispatch(deleteTask(uid, taskId));
   };
 
   return (
@@ -67,7 +73,7 @@ const Main = () => {
               validationSchema={validationSchema}
               onSubmit={handleSubmit}
             >
-              <Input name="addTask" placeholder="New Task" />
+              <Input name="task" placeholder="New Task" />
               <div className="text-right mt-4">
                 <Button variant="outline-success" type="submit">
                   Add Task
@@ -83,7 +89,7 @@ const Main = () => {
           >
             {task}
             <span>
-              <TiTickOutline size={20} onClick={handleTaskRemoval} />
+              <TiTickOutline size={20} onClick={() => handleTaskRemoval(key)} />
             </span>
           </div>
         ))}

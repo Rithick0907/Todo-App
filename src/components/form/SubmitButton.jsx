@@ -8,7 +8,7 @@ const SubmitButton = ({ title, isLoading, ...otherProps }) => {
   return (
     <div className="w-75 text-center mt-4">
       <Button type="submit" disabled={isSubmitting} {...otherProps}>
-        {isLoading ? <Spinner animation="border" /> : title}
+        {isLoading ? <Spinner animation="grow" size="sm" /> : null} {title}
       </Button>
     </div>
   );

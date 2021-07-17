@@ -13,7 +13,19 @@ const tasks = createSlice({
   name: "tasks",
   initialState,
   reducers: {
-    addTask: (tasks, action) => {},
+    addTask: (tasks, action) => {
+      tasks.taskList.push({
+        key: action.payload.name,
+        task: action.payload.task,
+        createdAt: action.payload.createdAt,
+      });
+    },
+    removeTask: (tasks, action) => {
+      const temp = tasks.taskList.filter(
+        (task) => task.key !== action.payload.taskId
+      );
+      tasks.taskList = temp;
+    },
     hydratingTasks: (tasks, action) => {
       tasks.loading = true;
       tasks.error = null;
@@ -33,8 +45,13 @@ const tasks = createSlice({
   },
 });
 
-export const { addTask, hydratingTasks, hydrateTasks, hydrationFailed } =
-  tasks.actions;
+export const {
+  addTask,
+  removeTask,
+  hydratingTasks,
+  hydrateTasks,
+  hydrationFailed,
+} = tasks.actions;
 export default tasks.reducer;
 
 //Custom Actions
@@ -50,7 +67,21 @@ export const updateTask = (uid, data) =>
   apiCallBegan({
     url: `${baseURL}/users/${uid}/tasks.json`,
     method: "POST",
-    data,
+    data: { ...data, createdAt: Date.now() },
+    additionalData: { ...data, createdAt: Date.now() },
+    onStart: hydratingTasks.type,
+    onSuccess: addTask.type,
+    onError: hydrationFailed.type,
+  });
+
+export const deleteTask = (uid, taskId) =>
+  apiCallBegan({
+    url: `${baseURL}/users/${uid}/tasks/${taskId}.json`,
+    method: "DELETE",
+    additionalData: { taskId },
+    onStart: hydratingTasks.type,
+    onSuccess: removeTask.type,
+    onError: hydrationFailed.type,
   });
 
 //Selectors
