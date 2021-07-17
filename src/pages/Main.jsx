@@ -1,11 +1,12 @@
 import * as Yup from "yup";
 
-import { Button, Card, Container, Nav, Navbar } from "react-bootstrap";
+import { Button, Card, Container, Nav, Navbar, Spinner } from "react-bootstrap";
 import { CustomForm, Input } from "../components/form";
 import React, { useEffect } from "react";
 import {
   deleteTask,
   fetchTask,
+  isTasksLoading,
   tasksSelector,
   updateTask,
 } from "../store/tasks";
@@ -26,6 +27,7 @@ const validationSchema = Yup.object().shape({
 
 const Main = () => {
   const user = useSelector(userSelector);
+  const isLoading = useSelector(isTasksLoading);
   const tasks = useSelector(tasksSelector);
   const dispatch = useDispatch();
   const history = useHistory();
@@ -35,7 +37,7 @@ const Main = () => {
     dispatch(fetchTask(uid));
   }, [dispatch, uid]);
 
-  const handleSubmit = (data, { resetForm }) => {
+  const handleSubmit = async (data, { resetForm }) => {
     dispatch(updateTask(uid, { createdAt: Date.now, ...data }));
     resetForm();
   };
@@ -93,6 +95,11 @@ const Main = () => {
             </span>
           </div>
         ))}
+        {isLoading && (
+          <div className="spinner-wrapper mt-4">
+            <Spinner className="d-block" animation="border" />
+          </div>
+        )}
       </MainStyled>
     </>
   );

@@ -44,6 +44,12 @@ export const MainStyled = styled.main`
     flex: 0 1 70%;
   }
 
+  & > .spinner-wrapper {
+    flex-basis: 70%;
+    display: flex;
+    justify-content: center;
+  }
+
   & svg {
     border: 1px solid black;
     cursor: pointer;

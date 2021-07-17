@@ -19,12 +19,14 @@ const tasks = createSlice({
         task: action.payload.task,
         createdAt: action.payload.createdAt,
       });
+      tasks.loading = false;
     },
     removeTask: (tasks, action) => {
       const temp = tasks.taskList.filter(
         (task) => task.key !== action.payload.taskId
       );
       tasks.taskList = temp;
+      tasks.loading = false;
     },
     hydratingTasks: (tasks, action) => {
       tasks.loading = true;
@@ -88,4 +90,9 @@ export const deleteTask = (uid, taskId) =>
 export const tasksSelector = createSelector(
   (store) => store.tasks,
   (tasks) => tasks.taskList
+);
+
+export const isTasksLoading = createSelector(
+  (store) => store.tasks,
+  (tasks) => tasks.loading
 );
