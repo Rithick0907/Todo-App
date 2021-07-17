@@ -100,6 +100,9 @@ const Main = () => {
             <Spinner className="d-block" animation="border" />
           </div>
         )}
+        {!isLoading && tasks.length === 0 && (
+          <div className="initial-content mt-4 text-danger">No tasks added</div>
+        )}
       </MainStyled>
     </>
   );

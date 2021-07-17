@@ -29,8 +29,8 @@ export const FormStyle = styled.div`
 `;
 
 export const MainStyled = styled.main`
-  align-items: flex-start;
   align-content: flex-start;
+  align-items: flex-start;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -45,13 +45,19 @@ export const MainStyled = styled.main`
   }
 
   & > .spinner-wrapper {
-    flex-basis: 70%;
     display: flex;
+    flex-basis: 70%;
     justify-content: center;
   }
 
   & svg {
     border: 1px solid black;
     cursor: pointer;
+  }
+
+  & .initial-content {
+    flex-basis: 70%;
+    font-size: 1.5rem;
+    text-align: center;
   }
 `;
