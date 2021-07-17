@@ -9,6 +9,7 @@ const apiMiddleware =
     if (action.type !== apiCallBegan.type) return next(action);
 
     const { url, method, data, onStart, onSuccess, onError } = action.payload;
+
     if (onStart) dispatch({ type: onStart });
     next(action);
 
@@ -21,6 +22,10 @@ const apiMiddleware =
 
       dispatch(apiCallSuccess());
       dispatch({ type: onSuccess, payload: response.data });
+      if (data.redirectTo) {
+        const { history, path } = data.redirectTo;
+        history.push(path);
+      }
     } catch (error) {
       dispatch(apiCallFailed());
       dispatch({ type: onError, payload: error.message });

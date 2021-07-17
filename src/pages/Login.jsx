@@ -4,6 +4,7 @@ import { CustomForm, Input, SubmitButton } from "../components/form";
 import { Link, useHistory } from "react-router-dom";
 import {
   authenticationFailed,
+  authenticationLoadingSelector,
   authenticationPending,
   login,
   loginUser,
@@ -34,12 +35,15 @@ const validationSchema = Yup.object().shape({
 });
 
 const Login = () => {
+  const isLoading = useSelector(authenticationLoadingSelector);
   const dispatch = useDispatch();
   const history = useHistory();
 
   const handleSubmit = async (data, { resetForm }) => {
-    await dispatch(loginUser(data));
-    history.push("/main");
+    await dispatch(
+      loginUser({ ...data, redirectTo: { history, path: "/main" } })
+    );
+    resetForm();
   };
 
   return (
@@ -57,7 +61,7 @@ const Login = () => {
           className="mt-4"
           placeholder="Password"
         />
-        <SubmitButton title="Login" isLoading={false} />
+        <SubmitButton title="Login" isLoading={isLoading} />
         <Link className="w-75 text-center mt-3" to="/signup">
           Don't have an account?
         </Link>

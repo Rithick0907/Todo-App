@@ -2,17 +2,17 @@ import * as Yup from "yup";
 
 import { CustomForm, FileInput, Input, SubmitButton } from "../components/form";
 import { Link, useHistory } from "react-router-dom";
+import { authenticationLoadingSelector, registerUser } from "../store/user";
 import {
   mobileNumberValidation,
   passwordValidation,
   validateImageFormat,
   validateImageSize,
 } from "../validate";
+import { useDispatch, useSelector } from "react-redux";
 
 import { FormStyle } from "./styles";
 import Notification from "../utils/Notification";
-import { registerUser } from "../store/user";
-import { useDispatch } from "react-redux";
 
 const initialValues = {
   email: "",
@@ -42,21 +42,24 @@ const validationSchema = Yup.object().shape({
     .required()
     .matches(passwordValidation.regExp, passwordValidation.errorMessage)
     .label("Password"),
-  confirmPassword: Yup.string().oneOf(
-    [Yup.ref("password"), null],
-    "Password must match"
-  ),
+  confirmPassword: Yup.string()
+    .required()
+    .oneOf([Yup.ref("password"), null], "Password must match")
+    .label("Confirm Password"),
 });
 const Signup = () => {
+  const isLoading = useSelector(authenticationLoadingSelector);
   const dispatch = useDispatch();
   const history = useHistory();
 
   const handleSubmit = async (
-    { photo, confirmPassword, ...values },
+    { photo, confirmPassword, ...data },
     { resetForm }
   ) => {
-    dispatch(registerUser(values));
-    history.push("/main");
+    await dispatch(
+      registerUser({ ...data, redirectTo: { history, path: "/main" } })
+    );
+    resetForm();
   };
   return (
     <FormStyle>
@@ -90,7 +93,7 @@ const Signup = () => {
           type="password"
           placeholder="Confirm Password"
         />
-        <SubmitButton title="Register" isLoading={false} />
+        <SubmitButton title="Register" isLoading={isLoading} />
         <Link className="w-75 text-center mt-3" to="/login">
           Already have an account?
         </Link>

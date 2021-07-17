@@ -36,5 +36,6 @@ export const MainStyled = styled.main`
   margin-top: 2rem;
   & > .card {
     flex: 0 1 70%;
+    box-shadow: 0 2px 8px gray;
   }
 `;

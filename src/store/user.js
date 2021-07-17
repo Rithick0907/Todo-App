@@ -63,8 +63,20 @@ export const loginUser = (data) =>
     onError: authenticationFailed.type,
   });
 
+//Selectors
 export const userSelector = createSelector(
   (store) => store.user,
   (user) => user.userData
 );
+
+export const authenticationLoadingSelector = createSelector(
+  (store) => store.user,
+  (user) => user.loading
+);
+
+export const authenticationErrorSelector = createSelector(
+  (store) => store.user,
+  (user) => user.error
+);
+
 export default userSlice.reducer;
