@@ -1,6 +1,6 @@
 import * as Yup from "yup";
 
-import { CustomForm, FileInput, Input, SubmitButton } from "../components/form";
+import { CustomForm, Input, SubmitButton } from "../components/form";
 import React, { useEffect } from "react";
 import {
   authenticationErrorSelector,
