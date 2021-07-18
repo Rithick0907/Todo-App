@@ -1,70 +1,36 @@
-# Getting Started with Create React App
+# Todo List Manager
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Todo List Manager is a web application used to track your todo tasks online.
+This application uses Firebase backend and Firebase Real Time DB to store your todo tasks and build with React and Redux.
+Visit this application at [https://todo-app-372c1.web.app/](https://todo-app-372c1.web.app/)
 
-## Available Scripts
+## Setup and run the app
 
-In the project directory, you can run:
+Follow these steps to setup and run the quickstart:
 
-### `npm start`
+ 1. Create a Firebase project in the [Firebase Console](https://console.firebase.google.com).
+ 2. In the Firebase console, enable Anonymous authentication on your project by doing: **Authentication > SIGN-IN METHOD > Anonymous > Enable > SAVE**
+ 3. In the Firebase console, enable RealTime Database on your project by clicking **Create Database** in the **RealTime Database** section of the console and answering all prompts.
+     1. Select testing mode for the security rules
+ 4. Either Fork or Clone this project and open the folder in CLI.
+ 5. Install all the dependencies using the `npm install` command.
+ 6. In this project, open httpConfig.js file inside service directory.
+ 7.  Add your firebase RealTime DB endpoint for baseURL in httpConfig File.
+ 8.  As indicated, open [http://localhost:3000](http://localhost:3000) in your browser and try out the app.
+ 
+ ## How to use this app
+ 1. Initially register your account using your Email.
+ 2. Login with registered email to use this app.
+ 3. Add your first task in the input field and Click add Task Button.
+ 4. Your added task is displayed below your Add Task card component.
+ 5. After completing the task, you remove that task by clicking the tick icon at the end of each task.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## How the app look like
+![register](https://user-images.githubusercontent.com/49742736/126063337-9aca8986-4dea-44f8-83c6-ab2ad930a207.PNG)
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+![login](https://user-images.githubusercontent.com/49742736/126063338-0ff4b8aa-327b-4dc3-a748-4ebe761ebff9.PNG)
 
-### `npm test`
+![initial image](https://user-images.githubusercontent.com/49742736/126063343-38daffde-357b-444e-aa9d-79d73509dd3d.PNG)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+![after task addition](https://user-images.githubusercontent.com/49742736/126063348-d6875b56-4179-4437-a7de-787c5ccd44f6.PNG)
 
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
