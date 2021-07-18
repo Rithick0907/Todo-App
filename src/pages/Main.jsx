@@ -1,6 +1,7 @@
 import * as Yup from "yup";
 
 import { Button, Card, Container, Nav, Navbar, Spinner } from "react-bootstrap";
+import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { CustomForm, Input } from "../components/form";
 import React, { useEffect } from "react";
 import {
@@ -84,17 +85,21 @@ const Main = () => {
             </CustomForm>
           </Card.Body>
         </Card>
-        {tasks.map(({ task, key }) => (
-          <div
-            key={key}
-            className="answer-list p-2 mt-4 justify-content-between"
-          >
-            {task}
-            <span>
-              <TiTickOutline size={20} onClick={() => handleTaskRemoval(key)} />
-            </span>
-          </div>
-        ))}
+        <TransitionGroup component={null}>
+          {tasks.map(({ task, key }) => (
+            <CSSTransition key={key} timeout={500} classNames="item">
+              <div className="answer-list p-2 mt-4 justify-content-between">
+                {task}
+                <span>
+                  <TiTickOutline
+                    size={20}
+                    onClick={() => handleTaskRemoval(key)}
+                  />
+                </span>
+              </div>
+            </CSSTransition>
+          ))}
+        </TransitionGroup>
         {isLoading && (
           <div className="spinner-wrapper mt-4">
             <Spinner className="d-block" animation="border" />
